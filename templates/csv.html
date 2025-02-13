@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Observation Data</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script>
+        function toggleObservationType() {
+            let mode = document.querySelector('input[name="mode"]:checked').value;
+            let extraInput = document.getElementById("extraObservation");
+            if (mode === "double") {
+                extraInput.style.display = "block";
+            } else {
+                extraInput.style.display = "none";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Enter the Satellite Data Input</h2>
+        <form action="/csv" method="post">
+            <div class="mydict">
+                <div><label>
+                        <input type="radio" name="mode" value="single" checked="" onclick="toggleObservationType()">
+                        <span>Single Carrier Phase</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="mode" value="double" onclick="toggleObservationType()">
+                        <span>Double Carrier Phase</span>
+                    </label>
+                </div>
+            </div>
+            <input type="text" name="satellite" placeholder="Satellite PRN" required>
+            <input type="text" name="observation_type_1" placeholder="Observation Type 1" required>
+
+            <div id="extraObservation" style="display: none;">
+                <input type="text" name="observation_type_2" placeholder="Observation Type 2">
+            </div>
+
+            <button type="submit">Search for Data</button>
+        </form>
+    </div>
+</body>
+
+</html>

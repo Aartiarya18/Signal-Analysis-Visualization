@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Selection</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const graphType = urlParams.get("type"); // 'single' or 'double'
+
+            const select = document.querySelector("select[name='graph_type']");
+            if (graphType === "single") {
+                select.innerHTML = `
+                    <option value="sgraph_no_phase">Single Graph (No Phase Slip Detection)</option>
+                    <option value="sgraph_with_phase">Single Graph (With Phase Slip Detection)</option>
+                `;
+            } else if (graphType === "double") {
+                select.innerHTML = `
+                    <option value="dgraph_no_phase">Double Graph (No Phase Slip Detection)</option>
+                    <option value="dgraph_with_phase">Double Graph (With Phase Slip Detection)</option>
+                `;
+            }
+
+            document.getElementById("graphForm").addEventListener("submit", function (event) {
+                event.preventDefault();  // Prevent page reload
+                
+                const formData = new FormData(this);
+                fetch("/generate_graph", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const graphContainer = document.getElementById("graphContainer");
+                        graphContainer.innerHTML = `<img src="static/graph.png?${new Date().getTime()}" alt="Generated Graph">`;
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="graphOptions">
+        <h2>Choose Your Graph Type</h2>
+        <form id="graphForm">
+            <input type="hidden" id="finalOutputFile" name="final_output_file">
+            <select name="graph_type"></select>
+            <button type="submit">Generate Graph</button>
+        </form>
+        <div id="graphContainer"></div> <!-- Graph will be displayed here -->
+    </div>
+</body>
+</html>
