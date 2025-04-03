@@ -74,7 +74,7 @@ The application will be accessible at `http://127.0.0.1:5000/`.
 This project is licensed under the MIT License.
 
 ## Author
-Developed by **[Your Name]**
+Developed by **Aarti Arya**
 
 ## Contributions
 Contributions are welcome! Feel free to fork the repository and submit a pull request.
